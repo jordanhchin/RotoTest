@@ -9,17 +9,31 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/teamslisttxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+    
+    <TextView
         android:id="@+id/teamstxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/teamslisttxt"
         android:layout_centerInParent="true"
         android:gravity="center" />
- 
+
+	<Button
+        android:id="@+id/teamlistbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamstxt"
+        android:text="@string/teamlist_button_desc" />
+       
     <Button
         android:id="@+id/teamsbutton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/teamstxt"
+        android:layout_below="@+id/teamlistbutton"
         android:text="@string/teams_button_desc" />
     
 	<TextView

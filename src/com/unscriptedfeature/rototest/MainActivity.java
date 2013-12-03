@@ -24,7 +24,6 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	String url = "http://games.espn.go.com/fhl/standings?leagueId=16080&seasonId=2014";
-	String delimiter = "TR[bgcolor]";
 	ProgressDialog mProgressDialog;
 	int teamCount = 12;
 	int counter = teamCount+5;
@@ -37,19 +36,28 @@ public class MainActivity extends Activity {
 		txtDebug.setText("Debug Info");
 		// Locate the Buttons in activity_main.xml
 	    Button teamsbutton = (Button) findViewById(R.id.teamsbutton);
+	    Button teamlistbutton = (Button) findViewById(R.id.teamlistbutton);
 	    teamsbutton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 	    		new Teams().execute();
 			}
 		});
+	    
+	    teamlistbutton.setOnClickListener(new OnClickListener() {
+	    	
+	    	public void onClick(View v) {
+	    		new TeamList().execute();
+	    	}
+	    });
 
 	}
 
     // Teams AsyncTask
     private class Teams extends AsyncTask<Void, Void, Void> {
         String teamstxt;
- 
+    	String delimiter = "TR[bgcolor]";
+    	
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -94,4 +102,43 @@ public class MainActivity extends Activity {
         }
     }	
 
+    // TeamList AsyncTask
+    private class TeamList extends AsyncTask<Void, Void, Void> {
+        String teamstxt;
+    	String delimiter = "A[title]";
+        
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+            mProgressDialog.setTitle("Roto Test");
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.show();
+            
+        }
+ 
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                // Connect to the web site
+            	Document doc = Jsoup.connect(url).get();
+                // Using Elements to get the Meta data
+                Elements alist = doc.select(delimiter);
+                teamstxt = alist.text();
+            }  catch (IOException e) {
+               e.printStackTrace();
+            }
+            return null;
+        }
+ 
+        @Override
+        protected void onPostExecute(Void result) {
+            // Set description into TextView
+            TextView txtTeams = (TextView) findViewById(R.id.teamslisttxt);
+            txtTeams.setText(teamstxt);
+            mProgressDialog.dismiss();
+        }
+    }	    
+    
 }

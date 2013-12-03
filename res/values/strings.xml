@@ -3,6 +3,7 @@
 
     <string name="app_name">RotoTest</string>
     <string name="action_settings">Settings</string>
-    <string name="teams_button_desc">Import Teams</string>
+    <string name="teamlist_button_desc">Load Team List</string>
+    <string name="teams_button_desc">Import Stats</string>
 
 </resources>
