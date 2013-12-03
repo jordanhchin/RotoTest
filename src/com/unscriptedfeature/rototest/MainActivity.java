@@ -27,15 +27,15 @@ public class MainActivity extends Activity {
 	String delimiter = "TR[bgcolor]";
 	ProgressDialog mProgressDialog;
 	int teamCount = 12;
-	int i = 1;
-	
-	
+	int counter = teamCount+5;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		 // Locate the Buttons in activity_main.xml
+        TextView txtDebug = (TextView) findViewById(R.id.debugtxt);
+		txtDebug.setText("Debug Info");
+		// Locate the Buttons in activity_main.xml
 	    Button teamsbutton = (Button) findViewById(R.id.teamsbutton);
 	    teamsbutton.setOnClickListener(new OnClickListener() {
 			
@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(false);
             mProgressDialog.show();
+            
         }
  
         @Override
@@ -67,12 +68,15 @@ public class MainActivity extends Activity {
             	Document doc = Jsoup.connect(url).get();
                 // Using Elements to get the Meta data
                 Elements trs = doc.select(delimiter);
+                int i = 1;
+                if (counter == (teamCount*2)+6)
+                	counter = teamCount + 5;
                 for (Element tr : trs) {
-                	if (i >= teamCount + 5)
+                	if (i == counter)
                 		teamstxt = tr.text();
                 	i++;
                 }
-                
+                counter++;
             }  catch (IOException e) {
                e.printStackTrace();
             }
@@ -84,6 +88,8 @@ public class MainActivity extends Activity {
             // Set description into TextView
             TextView txtTeams = (TextView) findViewById(R.id.teamstxt);
             txtTeams.setText(teamstxt);
+            TextView txtDebug = (TextView) findViewById(R.id.debugtxt);
+    		txtDebug.setText(String.valueOf(counter));
             mProgressDialog.dismiss();
         }
     }	
